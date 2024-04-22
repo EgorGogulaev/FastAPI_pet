@@ -4,5 +4,5 @@
     /   (_____/
    /_____/
 
-I'am a pet project using FastAPI
+I'am a pet project using FastAPI🐶
 Woof!
