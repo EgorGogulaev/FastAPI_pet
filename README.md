@@ -2,7 +2,7 @@
      (    @\___
      /         O
     /   (_____/
-   /_____/ U
+   /_____/
 
 I'am a pet project using FastAPI
 Woof!
