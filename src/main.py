@@ -19,13 +19,16 @@ from redis import asyncio as aioredis
 from src.operations.router import router as operations_router
 from src.users.router import router as users_router
 from src.tasks.router import router as tasks_router 
-from src.config import redis_host, redis_port
-
+from src.config import redis_user, redis_pass, redis_host, redis_port, test_db_port, test_db_pass
+from service_runners import PostgresRunner, RedisRunner
 
 # Сопрограмма для настройки кэширования перед запуском 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    redis = aioredis.from_url(f"redis://{redis_host}:{redis_port}/0")
+    # Перед запуском следует развернуть postgresql! Ниже автоматически разворачивается  только тестовая БД с томами
+    PostgresRunner(container_name="test_postgres", port=test_db_port, password=test_db_pass).run()
+    RedisRunner(container_name="redis", port=redis_port, password=redis_pass).run()
+    redis = aioredis.from_url(f"redis://{redis_user}:{redis_pass}@{redis_host}:{redis_port}/0")
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
     yield
 

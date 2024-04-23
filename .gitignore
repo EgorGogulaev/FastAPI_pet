@@ -1,3 +1,7 @@
 venv
 .env
 test_scripts.py
+
+pg_volume
+
+__pycache__/
