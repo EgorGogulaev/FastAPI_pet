@@ -1,4 +1,6 @@
 venv
+.vscode/
+test.session.sql
 .env
 test_scripts.py
 

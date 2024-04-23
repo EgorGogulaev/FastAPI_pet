@@ -20,7 +20,6 @@ def get_sync_session() -> Generator[Session, None, None]:
     with sync_session_maker() as session:
         yield session 
 
-@asynccontextmanager
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_maker() as session:
         yield session
