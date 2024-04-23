@@ -1,10 +1,7 @@
-import pytest
-
-
-from sqlalchemy import select, insert, update, delete
+from sqlalchemy import select, insert
 
 from users.models import User, Role
-from conftest import async_session_maker_test, get_async_client
+from conftest import sync_session_maker_test, async_session_maker_test
 
 
 async def test_add_role():
@@ -19,7 +16,7 @@ async def test_add_role():
         
         assert fetched_role, "Роль не была создана"
 
-@pytest.mark.asyncio
+
 async def test_async_register(get_async_client):
     response = await get_async_client.post(
         url="/auth/register",
@@ -35,20 +32,28 @@ async def test_async_register(get_async_client):
     assert response.status_code == 201
     
     async with async_session_maker_test() as async_session:
-        query = select(User)
+        query = select(User).where(User.email == "async_test@example.com")
         result = await async_session.execute(query)
         fetched_user = result.scalar()
         assert fetched_user, "Пользователь не был создан"
         
 
-# def test_sync_register():
-#     sync_client.post(
-#         url="/auth/register",
-#         json={
-#             "email": "sync_test@example.com",
-#             "password": "sync_test",
-#             "is_active": True,
-#             "is_superuser": False,
-#             "is_verified": False
-#         }
-#     )
+def test_sync_register(get_sync_client):
+    response = get_sync_client.post(
+        url="/auth/register",
+        json={
+            "email": "sync_test@example.com",
+            "password": "sync_test",
+            "is_active": True,
+            "is_superuser": False,
+            "is_verified": False
+        }
+    )
+        
+    assert response.status_code == 201
+    
+    with sync_session_maker_test() as sync_session:
+        query = select(User).where(User.email == "sync_test@example.com")
+        result = sync_session.execute(query)
+        fetched_user = result.scalar()
+        assert fetched_user, "Пользователь не был создан"
