@@ -18,7 +18,7 @@ DB_HOST
 DB_PORT
 DB_NAME
 
-- DSN PostgreSQL для тестирования (должен отличаться от "боевой БД"):
+- DSN PostgreSQL для тестирования (должен отличаться от "боевой" БД):
 TEST_DB_USER
 TEST_DB_PASS
 TEST_DB_HOST
