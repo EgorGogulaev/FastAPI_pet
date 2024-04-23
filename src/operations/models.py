@@ -6,7 +6,7 @@ Base = declarative_base()
 
 
 class Operation(Base):
-    __tablename__ = 'operations'
+    __tablename__ = 'operation'
     
     id = Column(BigInteger, primary_key=True)
     
